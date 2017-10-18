@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<script src="jquery.min.js"></script>
+		
+		<script type="text/javascript">
+
+
+
+			//constantly looking at timecheck.
+
+			var alwayscheck = false;
+			var startTime = 0;
+
+			function stopTimer()	{
+				$.ajax({
+					url:"timecheck.php",
+					type:"post",
+					data: {action:"startOrStopTimer",start:"0"},
+					success:function(results){
+						console.log(results);
+						$("#main").html("0");	
+
+					}
+				});
+			}
+
+			function startTimer()	{
+				//set  timer to start on db.
+				min = $("#inminutes").val();
+				sec = $("#inseconds").val();
+				hr = $("#inhours").val();
+
+
+				$.ajax({
+						url:"timecheck.php",
+						type:"post",
+						data: {action:"startOrStopTimer",start:"1", hour:hr, minute:min, second:sec},
+						success:function(results){
+							console.log(results);
+
+						}
+					});
+				//begin timer on browser
+			}
+
+			alwayscheck = setInterval(function(){
+					$.ajax({
+						url:"timecheck.php",
+						type:"post",
+						data: {action:"checkTimer"},
+						success:function(results){
+							console.log(results);
+							results = $.parseJSON(results);
+
+							$("#timer").html(results.curtime.toString());
+							$("#main").html(results.started.toString());
+							if(results.started==1){
+								startTime = new Date(results.start_time*1000).getTime();
+								curTime = new Date(results.unixtime*1000).getTime();
+								diffTime = curTime - startTime;
+								h = new Date(diffTime).getHours()%18;
+								h=h.toString();
+								m = new Date(diffTime).getMinutes().toString();
+								s = new Date(diffTime).getSeconds()%60;
+								s = s.toString();
+								if(s.length==1)
+									s="0"+s;
+								if(m.length==1)
+									m="0"+m;
+								if(h.length==1)
+									h="0"+h;								
+								$("#stopwatch").html(h+":"+m+":"+s);
+								$("#starttime").html(startTime.toString());
+
+							}
+							if(results.started==0){
+								startTime = 0;
+								$("#startTime").html("0");
+							}
+
+						}
+					});
+				},100);
+		
+		</script>
+	</head>
+	<body>
+
+		status:
+		<div id="main"></div>
+		<br/>
+
+		startTime:
+		<div id="starttime"></div>
+		<br/>
+
+
+		stopwatch clock time:
+		<div id="stopwatch"></div>
+		<br/>
+
+		<div id="setTime">
+			hours<input type="text" value="0" name="hours" id="inhours"/> 
+			minutes<input type="text" value="0" name="minutes" id="inminutes"/> 
+			seconds<input type="text" value="0" name="seconds" id="inseconds"/>
+		</div>
+		<br/><br/><br/><br/>
+
+
+		main clock time: 
+		<div id="timer"></div>
+
+		<button onclick="stopTimer();return false;">stopit</button>
+		<button onclick="startTimer();return false;">start ^__^</button>
+	</body>
+
+</html>
