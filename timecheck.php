@@ -22,7 +22,10 @@ function connect(){
 
 function checkTimer(){
 	try{
+
 		$conn = connect();
+		// var_dump($conn);
+		// die();
 		$stmt = $conn->prepare("SELECT CURRENT_TIMESTAMP as curtime, UNIX_TIMESTAMP(CURRENT_TIMESTAMP) as unixtime, started, start_time from timer_on where id=1");
 		$stmt->execute(array());
 		$ret = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
