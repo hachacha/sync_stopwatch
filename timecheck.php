@@ -8,7 +8,7 @@ if($_POST['action']=="checkTimer")
 
 function connect(){
 	try{
-		if($conn = new PDO('mysql:host=localhost;dbname=synced_watch','jon','bubbles')){
+		if($conn = new PDO('mysql:host=localhost;dbname=synced_watch','usr','pw')){
 			$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 			return $conn;
 		}
@@ -24,11 +24,11 @@ function checkTimer(){
 	try{
 
 		$conn = connect();
-		// var_dump($conn);
-		// die();
+
 		$stmt = $conn->prepare("SELECT CURRENT_TIMESTAMP as curtime, UNIX_TIMESTAMP(CURRENT_TIMESTAMP) as unixtime, started, start_time from timer_on where id=1");
 		$stmt->execute(array());
 		$ret = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
+
 		echo json_encode($ret);
 		
 	} catch(PDOException $e) {
