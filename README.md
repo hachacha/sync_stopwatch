@@ -6,7 +6,13 @@ The database is queried with javascript every 100ms but relies on the database's
 
 Created for [Josh of ICE](https://www.iceorg.org/joshua-rubin/)
 
-[used this guide](https://askubuntu.com/questions/330802/how-can-i-make-my-laptop-a-server-for-the-intranet) in order to make it so the program can be accessed offline.
+change the db credentials towards the top of the file timecheck.php for your specific system.
+
+to get this to work on an intranet you will need a router and an ethernet cable. connect your computer to the router and find the ip address using ifconfig. place this project in a directory that you can access by localhost -- /var/www/html/sync_stopwatch. tell other users to connect to that ip address and the folder that your stopwatch is in. 
+
+so something like 
+http://192.168.0.1/sync_stopwatch
+
 
 ### future:
 + multiple timers

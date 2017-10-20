@@ -1,6 +1,8 @@
 <html>
 	<head>
+		
 		<script src="jquery.min.js"></script>
+
 		
 		<script type="text/javascript">
 
@@ -18,8 +20,6 @@
 					data: {action:"startOrStopTimer",start:"0"},
 					success:function(results){
 						console.log(results);
-						$("#main").html("0");	
-
 					}
 				});
 			}
@@ -53,7 +53,7 @@
 							results = $.parseJSON(results);
 
 							$("#timer").html(results.curtime.toString());
-							$("#main").html(results.started.toString());
+							// $("#status").html("ON!");
 							if(results.started==1){
 								startTime = new Date(results.start_time*1000).getTime();
 								curTime = new Date(results.unixtime*1000).getTime();
@@ -70,12 +70,15 @@
 								if(h.length==1)
 									h="0"+h;								
 								$("#stopwatch").html(h+":"+m+":"+s);
-								$("#starttime").html(startTime.toString());
 
 							}
+							console.log(results.started);
 							if(results.started==0){
 								startTime = 0;
-								$("#startTime").html("0");
+								$("#status").html("stopwatch off");
+							}
+							else{
+								$("#status").html("ON!");	
 							}
 
 						}
@@ -83,20 +86,34 @@
 				},100);
 		
 		</script>
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<style type="text/css">
+			 
+		 #stopwatch{
+		 	font-family: "Lucida Console", Monaco, monospace;
+		 	letter-spacing: 5px;
+		 	font-size: 3em;
+		 } 
+
+		</style>
 	</head>
 	<body>
 
 		status:
-		<div id="main"></div>
+		<div id="status"></div>
 		<br/>
 
-		startTime:
-		<div id="starttime"></div>
-		<br/>
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				stopwatch
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h1><div id="stopwatch"></div></h1>
+			</div>
+		</div>
 
-
-		stopwatch clock time:
-		<div id="stopwatch"></div>
 		<br/>
 
 		<div id="setTime">
@@ -110,7 +127,7 @@
 		main clock time: 
 		<div id="timer"></div>
 
-		<button onclick="stopTimer();return false;">stopit u__u</button>
+		<button onclick="stopTimer();return false;">stop u__u</button>
 		<button onclick="startTimer();return false;">start ^__^</button>
 	</body>
 
