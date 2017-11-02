@@ -49,7 +49,7 @@
 						type:"post",
 						data: {action:"checkTimer"},
 						success:function(results){
-							console.log(results);
+							// console.log(results);
 							results = $.parseJSON(results);
 
 							$("#timer").html(results.curtime.toString());
@@ -58,10 +58,10 @@
 								startTime = new Date(results.start_time*1000).getTime();
 								curTime = new Date(results.unixtime*1000).getTime();
 								diffTime = curTime - startTime;
-								h = new Date(diffTime).getHours()%18;
+								h = new Date(diffTime).getUTCHours();
 								h=h.toString();
-								m = new Date(diffTime).getMinutes().toString();
-								s = new Date(diffTime).getSeconds()%60;
+								m = new Date(diffTime).getUTCMinutes().toString();
+								s = new Date(diffTime).getUTCSeconds()%60;
 								s = s.toString();
 								if(s.length==1)
 									s="0"+s;
